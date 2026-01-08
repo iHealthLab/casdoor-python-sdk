@@ -14,9 +14,11 @@
 
 import base64
 import json
+import ssl
 from typing import Dict, List, Optional
 
 import aiohttp
+import certifi
 import jwt
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
@@ -81,7 +83,10 @@ class AioHttpClient:
         return await self.fetch(path, method="POST", **kwargs)
 
     async def __aenter__(self):
-        self.session = await aiohttp.ClientSession().__aenter__()
+        # Create SSL context with certifi certificates to fix SSL verification issues
+        ssl_context = ssl.create_default_context(cafile=certifi.where())
+        connector = aiohttp.TCPConnector(ssl=ssl_context)
+        self.session = await aiohttp.ClientSession(connector=connector).__aenter__()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):

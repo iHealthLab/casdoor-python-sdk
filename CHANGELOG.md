@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+# [1.40.0-patch1](https://github.com/casdoor/casdoor-python-sdk/compare/v1.39.0...v1.40.0) (2026-01-07)
+
+* Added Makefile
+* Setup pip-tools & pip-compile
+* Upgraded: aiohttp, filelock
+* Added docs/*.md
+
 # [1.40.0](https://github.com/casdoor/casdoor-python-sdk/compare/v1.39.0...v1.40.0) (2025-11-04)
 
 

@@ -12,14 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import random
 
-TestEndpoint = "https://demo.casdoor.com"
-TestClientId = "294b09fbc17f95daf2fe"
-TestClientSecret = "dd8982f7046ccba1bbd7851d5c1ece4e52bf039d"
-TestOrganization = "casbin"
-TestApplication = "app-vue-python-example"
-TestJwtPublicKey = """-----BEGIN CERTIFICATE-----
+# Test configuration - can be overridden with environment variables
+# Set these environment variables to use your own Casdoor server:
+#   CASDOOR_ENDPOINT, CASDOOR_CLIENT_ID, CASDOOR_CLIENT_SECRET,
+#   CASDOOR_ORGANIZATION, CASDOOR_APPLICATION, CASDOOR_JWT_PUBLIC_KEY
+
+TestEndpoint = os.getenv("CASDOOR_ENDPOINT", "https://demo.casdoor.com")
+TestClientId = os.getenv("CASDOOR_CLIENT_ID", "294b09fbc17f95daf2fe")
+TestClientSecret = os.getenv("CASDOOR_CLIENT_SECRET", "dd8982f7046ccba1bbd7851d5c1ece4e52bf039d")
+TestOrganization = os.getenv("CASDOOR_ORGANIZATION", "casbin")
+TestApplication = os.getenv("CASDOOR_APPLICATION", "app-vue-python-example")
+
+# JWT Public Key - can be provided via environment variable or file
+_jwt_key_env = os.getenv("CASDOOR_JWT_PUBLIC_KEY")
+_jwt_key_file = os.getenv("CASDOOR_JWT_PUBLIC_KEY_FILE")
+
+if _jwt_key_env:
+    TestJwtPublicKey = _jwt_key_env
+elif _jwt_key_file:
+    with open(_jwt_key_file, "r") as f:
+        TestJwtPublicKey = f.read()
+else:
+    # Default demo server certificate
+    TestJwtPublicKey = """-----BEGIN CERTIFICATE-----
 MIIE+TCCAuGgAwIBAgIDAeJAMA0GCSqGSIb3DQEBCwUAMDYxHTAbBgNVBAoTFENh
 c2Rvb3IgT3JnYW5pemF0aW9uMRUwEwYDVQQDEwxDYXNkb29yIENlcnQwHhcNMjEx
 MDE1MDgxMTUyWhcNNDExMDE1MDgxMTUyWjA2MR0wGwYDVQQKExRDYXNkb29yIE9y
